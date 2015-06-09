@@ -7,8 +7,7 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -71,30 +70,37 @@ public class SpacedEdit extends LinearLayout {
         ButterKnife.inject(this);
 
         e=new EditText[] {e1, e2, e3, e4, e5};
-        e1.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(e1, 0);
-                }
-            }
-        });
+//        e1.setOnFocusChangeListener(new OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(e1, 0);
+//                }
+//            }
+//        });
         for (int i=0; i<e.length; i++){
             final int finalI = i;
             e[i].addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-                }
-
+                private boolean updating;
                 @Override
                 public void afterTextChanged(Editable editable) {
+                    if(updating){
+                        updating=false;
+                        return;
+                    }
+
+                    Log.d("c", editable.toString());
+                    String s= editable.toString().toUpperCase();
+                    updating=true;
+                    editable.replace(0,1,s);
+
                     if (editable.length() == 1) {
                         if (finalI + 1 < e.length) {
                             e[finalI + 1].requestFocus();
@@ -126,6 +132,19 @@ public class SpacedEdit extends LinearLayout {
 
     public interface OnFilledListener {
         void onFilled(String s);
+    }
+
+    public interface Validator{
+        boolean isValid(String k);
+    }
+
+    private class DefaultValidator implements Validator{
+        private static final String DEFAULT_PATTERN = "^[A-Fa-f0-9]+$";
+
+        @Override
+        public boolean isValid(String k) {
+            return k.matches(DEFAULT_PATTERN);
+        }
     }
 
 }
