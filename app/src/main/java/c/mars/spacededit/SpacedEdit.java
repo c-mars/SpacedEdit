@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -82,7 +81,7 @@ public class SpacedEdit extends LinearLayout {
 //        });
         for (int i=0; i<e.length; i++){
             final int finalI = i;
-            e[i].setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+//            e[i].setInputType(EditText.IN);
             e[i].addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -107,7 +106,8 @@ public class SpacedEdit extends LinearLayout {
 
                     if (editable.length() == 1) {
                         if (finalI + 1 < e.length) {
-                            e[finalI + 1].requestFocus();
+                            EditText ne=e[finalI + 1];
+                            ne.requestFocus();
                         } else {
                             fillOut();
                         }
