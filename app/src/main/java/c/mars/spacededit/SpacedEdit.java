@@ -3,6 +3,8 @@ package c.mars.spacededit;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,6 +25,8 @@ public class SpacedEdit extends LinearLayout {
     EditText e3;
     @InjectView(R.id.e4)
     EditText e4;
+
+    EditText[] e;
 
     public SpacedEdit(Context context) {
         super(context);
@@ -48,7 +52,29 @@ public class SpacedEdit extends LinearLayout {
     private void init(){
         inflate(getContext(), R.layout.spaced_edit, this);
         ButterKnife.inject(this);
-        e3.setText("Injected!");
+
+        e=new EditText[] {e1, e2, e3, e4};
+        for (int i=0; i<e.length; i++){
+            final int finalI = i;
+            e[i].addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if (editable.length() == 1 && finalI + 1 < e.length) {
+                        e[finalI+1].requestFocus();
+                    }
+                }
+            });
+        }
     }
 
 }
