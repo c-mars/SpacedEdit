@@ -28,6 +28,12 @@ public class SpacedEdit extends LinearLayout {
 
     EditText[] e;
 
+    public void setFilledListener(OnFilledListener filledListener) {
+        this.filledListener = filledListener;
+    }
+
+    OnFilledListener filledListener;
+
     public SpacedEdit(Context context) {
         super(context);
         init();
@@ -69,12 +75,35 @@ public class SpacedEdit extends LinearLayout {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    if (editable.length() == 1 && finalI + 1 < e.length) {
-                        e[finalI+1].requestFocus();
+                    if (editable.length() == 1) {
+                        if (finalI + 1 < e.length) {
+                            e[finalI + 1].requestFocus();
+                        } else {
+                            fillOut();
+                        }
+                    } else if (editable.length() == 0){
+//                        move back
+                        if(finalI > 0) {
+                            e[finalI - 1].requestFocus();
+                        } else {
+                            fillOut();
+                        }
                     }
                 }
             });
         }
+    }
+
+    private void fillOut(){
+        String o="";
+        for(EditText et:e){
+            o+=et.getText();
+        }
+        filledListener.onFilled(o);
+    }
+
+    public interface OnFilledListener {
+        void onFilled(String s);
     }
 
 }

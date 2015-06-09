@@ -4,14 +4,31 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    @InjectView(R.id.o)
+    TextView o;
+    @InjectView(R.id.e)
+    SpacedEdit e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.inject(this);
+        e.setFilledListener(new SpacedEdit.OnFilledListener() {
+            @Override
+            public void onFilled(String s) {
+                o.setText(s);
+            }
+        });
     }
 
     @Override
