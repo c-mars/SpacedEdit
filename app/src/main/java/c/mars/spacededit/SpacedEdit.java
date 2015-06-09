@@ -2,10 +2,13 @@ package c.mars.spacededit;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -25,6 +28,8 @@ public class SpacedEdit extends LinearLayout {
     EditText e3;
     @InjectView(R.id.e4)
     EditText e4;
+    @InjectView(R.id.e5)
+    EditText e5;
 
     EditText[] e;
 
@@ -55,11 +60,26 @@ public class SpacedEdit extends LinearLayout {
         init();
     }
 
+    @Override
+    protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+        e1.requestFocus();
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+    }
+
     private void init(){
         inflate(getContext(), R.layout.spaced_edit, this);
         ButterKnife.inject(this);
 
-        e=new EditText[] {e1, e2, e3, e4};
+        e=new EditText[] {e1, e2, e3, e4, e5};
+        e1.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(e1, 0);
+                }
+            }
+        });
         for (int i=0; i<e.length; i++){
             final int finalI = i;
             e[i].addTextChangedListener(new TextWatcher() {
@@ -84,7 +104,9 @@ public class SpacedEdit extends LinearLayout {
                     } else if (editable.length() == 0){
 //                        move back
                         if(finalI > 0) {
-                            e[finalI - 1].requestFocus();
+                            EditText pe =e[finalI - 1];
+                            pe.requestFocus();
+                            pe.setSelection(pe.getText().length());
                         } else {
                             fillOut();
                         }

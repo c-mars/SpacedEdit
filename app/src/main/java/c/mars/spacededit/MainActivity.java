@@ -29,6 +29,7 @@ public class MainActivity extends ActionBarActivity {
                 o.setText(s);
             }
         });
+        e.requestFocus();
     }
 
     @Override
