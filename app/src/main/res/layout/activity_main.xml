@@ -9,19 +9,30 @@
         android:text="111"
         android:layout_below="@+id/o"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:visibility="visible"/>
 
     <c.mars.spacededit.SpacedEdit android:id="@+id/e"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="visible"/>
+        android:visibility="gone" />
 
     <TextView android:id="@+id/o"
         android:layout_below="@+id/e"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
+
+    <c.mars.spacededit.CustomEditText android:id="@+id/ce"
+        android:layout_width="match_parent"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_below="@+id/t"
+        android:layout_height="wrap_content"
+        android:cursorVisible="false"/>
 
 </RelativeLayout>

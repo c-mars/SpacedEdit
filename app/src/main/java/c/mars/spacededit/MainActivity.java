@@ -21,6 +21,8 @@ public class MainActivity extends ActionBarActivity {
     SpacedEdit e;
     @InjectView(R.id.t)
     EditText t;
+    @InjectView(R.id.ce)
+    CustomEditText ce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
                         t.setText(sb.append(c));
                     }
                 } else if(s.length()<lastLen && s.length()>=0){
-                    t.setText(sb.replace(sb.length()-1, sb.length()-1, null));
+                    t.setText(sb.replace(sb.length() - 1, sb.length() - 1, null));
                 }
                 lastLen=s.length();
                 t.setSelection(lastLen);
